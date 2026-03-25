@@ -5,6 +5,8 @@ public class Door : MonoBehaviour
     public int requiredKeys = 1;
     public bool isOpen = false;
 
+    public GameObject door;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !isOpen)
@@ -20,11 +22,10 @@ public class Door : MonoBehaviour
                 Debug.Log("Not enough keys");
             }
         }
-    }
-
-    void OpenDoor()
-    {
-        isOpen = true;
-        gameObject.SetActive(false);
+        void OpenDoor()
+        {
+            isOpen = true;
+            door.SetActive(false); 
+        }
     }
 }
