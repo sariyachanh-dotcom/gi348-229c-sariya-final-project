@@ -4,8 +4,10 @@ public class Door : MonoBehaviour
 {
     public int requiredKeys = 1;
     public bool isOpen = false;
+    public bool useSpecialKeys = false;
 
     public GameObject door;
+    
 
     void OnTriggerEnter(Collider other)
     {
@@ -13,19 +15,27 @@ public class Door : MonoBehaviour
         {
             PlayerKeys player = other.GetComponent<PlayerKeys>();
 
-            if (player.keys >= requiredKeys)
+            int currentKeys = useSpecialKeys ? player.specialKeys : player.keys;
+
+            if (currentKeys >= requiredKeys)
             {
-                OpenDoor();
+                OpenDoor(player);
             }
             else
             {
                 Debug.Log("Not enough keys");
             }
         }
-        void OpenDoor()
+        void OpenDoor(PlayerKeys player)
         {
             isOpen = true;
-            door.SetActive(false); 
+
+            if (!useSpecialKeys)
+            {
+                player.keys -= requiredKeys; 
+            }
+
+            door.SetActive(false);
         }
     }
 }
