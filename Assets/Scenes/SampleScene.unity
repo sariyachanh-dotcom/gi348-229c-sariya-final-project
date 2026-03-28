@@ -5869,8 +5869,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1190213515}
+  m_Children: []
   m_Father: {fileID: 1628543677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
@@ -8005,7 +8004,6 @@ GameObject:
   - component: {fileID: 1190213514}
   - component: {fileID: 1190213513}
   - component: {fileID: 1190213512}
-  - component: {fileID: 1190213516}
   m_Layer: 0
   m_Name: ScaryQuad
   m_TagString: Untagged
@@ -8100,26 +8098,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190213510}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.6, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 963194228}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1190213516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190213510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eab597c9c7944cf4c8f305ba9ec1e17e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScaryJump
-  duration: 0.5
 --- !u!1 &1195328596
 GameObject:
   m_ObjectHideFlags: 0
@@ -14183,3 +14168,4 @@ SceneRoots:
   - {fileID: 651113778}
   - {fileID: 1719737535}
   - {fileID: 792178089}
+  - {fileID: 1190213515}
