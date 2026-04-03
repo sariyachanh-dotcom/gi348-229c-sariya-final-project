@@ -2,16 +2,22 @@ using UnityEngine;
 
 public class KeyPickup : MonoBehaviour
 {
+    public KeyColor keyColor;
+    public int amount = 1;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             PlayerKeys player = other.GetComponent<PlayerKeys>();
-            player.keys += 1;
 
-            Debug.Log("Picked up key! Total keys: " + player.keys);
+            if (player != null)
+            {
+                player.AddKey(keyColor, amount);
+                Debug.Log("Picked " + keyColor + " key! Total: " + player.GetKeys(keyColor));
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
         }
     }
 }

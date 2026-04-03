@@ -2,28 +2,22 @@ using UnityEngine;
 
 public class SpecialKeyPickup : MonoBehaviour
 {
-    public GameObject scaryQuad;
+    public KeyColor keyColor;
+    public int amount = 1;
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             PlayerKeys player = other.GetComponent<PlayerKeys>();
-            player.specialKeys += 1;
 
-            Debug.Log("Picked SPECIAL key! Total: " + player.specialKeys);
-            Debug.Log("Jumpscare triggered!");
-
-            if (scaryQuad != null)
+            if (player != null)
             {
-                scaryQuad.SetActive(true);
-            }
-            else
-            {
-                Debug.Log("ScaryQuad not assigned!");
-            }
+                player.AddKey(keyColor, amount);
+                Debug.Log("Picked " + keyColor + " key! Total: " + player.GetKeys(keyColor));
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
         }
     }
 }

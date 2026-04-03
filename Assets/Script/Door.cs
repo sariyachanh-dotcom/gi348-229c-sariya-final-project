@@ -2,40 +2,98 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public int requiredKeys = 1;
-    public bool isOpen = false;
-    public bool useSpecialKeys = false;
+    public Transform door;
 
-    public GameObject door;
-    
+    public KeyColor requiredColor;
+    public int requiredAmount = 1;
+
+    public float slideDistance = 3f;
+    public float slideSpeed = 2f;
+
+    private bool isOpen = false;
+    private bool isOpening = false;
+    private bool playerInRange = false;
+
+    private PlayerKeys currentPlayer;
+    private Vector3 targetPosition;
+
+    void Start()
+    {
+        targetPosition = door.position + door.right * slideDistance;
+    }
+
+    void Update()
+    {
+        // Press E to try opening
+        if (playerInRange && Input.GetKeyDown(KeyCode.E) && !isOpen)
+        {
+            TryOpenDoor();
+        }
+
+        // Slide animation
+        if (isOpening)
+        {
+            door.position = Vector3.Lerp(
+                door.position,
+                targetPosition,
+                Time.deltaTime * slideSpeed
+            );
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isOpen)
+        if (other.CompareTag("Player"))
         {
-            PlayerKeys player = other.GetComponent<PlayerKeys>();
+            playerInRange = true;
+            currentPlayer = other.GetComponent<PlayerKeys>();
 
-            int currentKeys = useSpecialKeys ? player.specialKeys : player.keys;
-
-            if (currentKeys >= requiredKeys)
-            {
-                OpenDoor(player);
-            }
-            else
-            {
-                Debug.Log("Not enough keys");
-            }
+            DoorUI.instance.Show("Press E to open");
         }
-        void OpenDoor(PlayerKeys player)
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
-            isOpen = true;
+            playerInRange = false;
+            currentPlayer = null;
 
-            if (!useSpecialKeys)
-            {
-                player.keys -= requiredKeys; 
-            }
-
-            door.SetActive(false);
+            DoorUI.instance.Hide();
         }
+    }
+
+    void TryOpenDoor()
+    {
+        if (currentPlayer == null) return;
+
+        int currentKeys = currentPlayer.GetKeys(requiredColor);
+
+        if (currentKeys == 0)
+        {
+            DoorUI.instance.Show("You don't have this key");
+            return;
+        }
+
+        if (currentKeys < requiredAmount)
+        {
+            DoorUI.instance.Show("Need " + requiredAmount + " keys");
+            return;
+        }
+
+        if (currentKeys == 0 && currentPlayer.TotalKeys() > 0)
+        {
+            DoorUI.instance.Show("Wrong key color");
+            return;
+        }
+
+        DoorUI.instance.Show("Door opened");
+        currentPlayer.UseKeys(requiredColor, requiredAmount);
+        OpenDoor();
+    }
+    void OpenDoor()
+    {
+        isOpen = true;
+        isOpening = true;
     }
 }
