@@ -2,44 +2,46 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private bool playerInRange = false;
+    public float interactDistance = 3f;
+
+    private Transform playerCamera;
     private PlayerRespawn player;
+
+    private bool isLooking = false;
+
+    void Start()
+    {
+        playerCamera = Camera.main.transform;
+    }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            if (player != null)
-            {
-                player.SetCheckpoint(transform.position);
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        RaycastHit hit;
 
-                if (DoorUI.instance != null)
-                    DoorUI.instance.Show("Checkpoint saved!");
+        if (Physics.Raycast(ray, out hit, interactDistance))
+        {
+            if (hit.transform == transform)
+            {
+                if (!isLooking)
+                {
+                    Debug.Log("Press E to set checkpoint");
+                    isLooking = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (player == null)
+                        player = FindFirstObjectByType<PlayerRespawn>();
+
+                    player.SetCheckpoint(transform.position);
+                    Debug.Log("Checkpoint saved!");
+                }
+
+                return;
             }
         }
-    }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            player = other.GetComponent<PlayerRespawn>();
-
-            if (DoorUI.instance != null)
-                DoorUI.instance.Show("Press E to save checkpoint");
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            player = null;
-
-            if (DoorUI.instance != null)
-                DoorUI.instance.Hide();
-        }
+        isLooking = false;
     }
 }
