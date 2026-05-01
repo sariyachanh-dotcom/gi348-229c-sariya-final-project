@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class KeyPickup : MonoBehaviour
 {
+    public GameObject enemy;
     public KeyColor keyColor;
     public int amount = 1;
 
@@ -14,7 +15,12 @@ public class KeyPickup : MonoBehaviour
             if (player != null)
             {
                 player.AddKey(keyColor, amount);
-                Debug.Log("Picked " + keyColor + " key! Total: " + player.GetKeys(keyColor));
+
+
+                if (keyColor == KeyColor.Purple)
+                {
+                    enemy.SetActive(true);
+                }
 
                 Destroy(gameObject);
             }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     public float interactDistance = 3f;
-
+    public GameObject promptUI;
     private Transform playerCamera;
     private PlayerRespawn player;
 
@@ -23,6 +23,8 @@ public class Checkpoint : MonoBehaviour
         {
             if (hit.transform == transform)
             {
+                promptUI.SetActive(true); 
+
                 if (!isLooking)
                 {
                     Debug.Log("Press E to set checkpoint");
@@ -42,6 +44,8 @@ public class Checkpoint : MonoBehaviour
             }
         }
 
+       
+        promptUI.SetActive(false);
         isLooking = false;
     }
 }
